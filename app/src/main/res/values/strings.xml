@@ -1,0 +1,28 @@
+<resources>
+    <string name="app_name">Geosite</string>
+    <string name="button_addGeosite">Add Geosite</string>
+    <string name="hint_geositeTitle">Geosite Title</string>
+    <string name="hint_geositeDescription">Description </string>
+    <string name="menu_addGeosite">Add</string>
+    <string name="menu_mapMode">Map Mode</string>
+    <string name="menu_cancelGeosite">Cancel</string>
+    <string name="enter_geosite_title"> Please enter a Geosite Title </string>
+    <string name="save_geosite"> Save Geosite </string>
+    <string name="button_addImage"> Add Image </string>
+    <string name="select_geosite_image">Select geosite image</string>
+    <string name="change_geosite_image">Change geosite image</string>
+    <string name="button_location">Set Location</string>
+    <string name="title_activity_map">Map</string>
+    <string name="menu_saveGeosite">Save</string>
+    <string name="menu_deleteGeosite">Delete</string>
+    <string name="title_activity_geosite_maps">Map of All Geosites</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+
+</resources>
