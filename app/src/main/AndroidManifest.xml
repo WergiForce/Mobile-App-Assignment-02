@@ -29,6 +29,9 @@
             android:label="@string/title_activity_map" />
         <activity
             android:name=".views.geositelist.GeositeListView"
+            android:exported="true" />
+        <activity
+            android:name=".views.splashscreen.SplashScreen"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
