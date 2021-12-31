@@ -59,7 +59,7 @@ class GeositePresenter(private val view: GeositeView) {
     }
 
 
-    fun doAddOrSave(title: String, description: String) {
+    suspend fun doAddOrSave(title: String, description: String) {
         geosite.title = title
         geosite.description = description
         if (edit) {
@@ -77,7 +77,7 @@ class GeositePresenter(private val view: GeositeView) {
 
     }
 
-    fun doDelete() {
+    suspend fun doDelete() {
         app.geosites.delete(geosite)
         view.finish()
 
@@ -187,13 +187,13 @@ class GeositePresenter(private val view: GeositeView) {
     private fun doPermissionLauncher() {
         i("permission check called")
         requestPermissionLauncher =
-            view.registerForActivityResult(ActivityResultContracts.RequestPermission())
-            { isGranted: Boolean ->
-                if (isGranted) {
-                    doSetCurrentLocation()
-                } else {
-                    locationUpdate(location.lat, location.lng)
-                }
+        view.registerForActivityResult(ActivityResultContracts.RequestPermission())
+        { isGranted: Boolean ->
+            if (isGranted) {
+                doSetCurrentLocation()
+            } else {
+                locationUpdate(location.lat, location.lng)
             }
+        }
     }
 }

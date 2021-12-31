@@ -13,11 +13,11 @@ interface GeositeListener {
 
 class GeositeAdapter constructor(private var geosites: List<GeositeModel>,
                                    private val listener: GeositeListener) :
-    RecyclerView.Adapter<GeositeAdapter.MainHolder>() {
+        RecyclerView.Adapter<GeositeAdapter.MainHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainHolder {
         val binding = CardGeositeBinding
-            .inflate(LayoutInflater.from(parent.context), parent, false)
+                .inflate(LayoutInflater.from(parent.context), parent, false)
 
         return MainHolder(binding)
     }
@@ -30,7 +30,7 @@ class GeositeAdapter constructor(private var geosites: List<GeositeModel>,
     override fun getItemCount(): Int = geosites.size
 
     class MainHolder(private val binding : CardGeositeBinding) :
-        RecyclerView.ViewHolder(binding.root) {
+            RecyclerView.ViewHolder(binding.root) {
 
         fun bind(geosite: GeositeModel, listener: GeositeListener) {
             binding.geositeTitle.text = geosite.title

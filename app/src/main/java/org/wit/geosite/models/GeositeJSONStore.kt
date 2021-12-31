@@ -29,19 +29,19 @@ class GeositeJSONStore(private val context: Context) : GeositeStore {
         }
     }
 
-    override fun findAll(): MutableList<GeositeModel> {
+    override suspend fun findAll(): MutableList<GeositeModel> {
         logAll()
         return geosites
     }
 
-    override fun create(geosite: GeositeModel) {
+    override suspend fun create(geosite: GeositeModel) {
         geosite.id = generateRandomId()
         geosites.add(geosite)
         serialize()
     }
 
 
-    override fun update(geosite: GeositeModel) {
+    override suspend fun update(geosite: GeositeModel) {
         val geositesList = findAll() as ArrayList<GeositeModel>
         var foundGeosite: GeositeModel? = geositesList.find { p -> p.id == geosite.id }
         if (foundGeosite != null) {
@@ -55,12 +55,12 @@ class GeositeJSONStore(private val context: Context) : GeositeStore {
         serialize()
     }
 
-    override fun delete(geosite: GeositeModel) {
+    override suspend fun delete(geosite: GeositeModel) {
         val foundGeosite: GeositeModel? = geosites.find { it.id == geosite.id }
         geosites.remove(foundGeosite)
         serialize()
     }
-    override fun findById(id:Long) : GeositeModel? {
+    override suspend fun findById(id:Long) : GeositeModel? {
         val foundGeosite: GeositeModel? = geosites.find { it.id == id }
         return foundGeosite
     }
