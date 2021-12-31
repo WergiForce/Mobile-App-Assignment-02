@@ -8,6 +8,9 @@ import android.view.MenuItem
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.material.snackbar.Snackbar
 import com.squareup.picasso.Picasso
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import org.wit.geosite.R
 import org.wit.geosite.databinding.ActivityGeositeBinding
 import org.wit.geosite.models.GeositeModel
@@ -68,11 +71,18 @@ class GeositeView : AppCompatActivity() {
                     Snackbar.make(binding.root, R.string.enter_geosite_title, Snackbar.LENGTH_LONG)
                         .show()
                 } else {
-                    presenter.doAddOrSave(binding.geositeTitle.text.toString(), binding.description.text.toString())
+                    GlobalScope.launch(Dispatchers.IO) {
+                        presenter.doAddOrSave(
+                            binding.geositeTitle.text.toString(),
+                            binding.description.text.toString()
+                        )
+                    }
                 }
             }
             R.id.item_delete -> {
-                presenter.doDelete()
+                GlobalScope.launch(Dispatchers.IO){
+                    presenter.doDelete()
+                }
             }
             R.id.item_cancel -> {
                 presenter.doCancel()
@@ -83,8 +93,8 @@ class GeositeView : AppCompatActivity() {
     }
 
     fun showGeosite(geosite: GeositeModel) {
-        binding.geositeTitle.setText(geosite.title)
-        binding.description.setText(geosite.description)
+        if (binding.geositeTitle.text.isEmpty()) binding.geositeTitle.setText(geosite.title)
+        if (binding.description.text.isEmpty())  binding.description.setText(geosite.description)
 
         Picasso.get()
             .load(geosite.image)

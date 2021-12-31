@@ -5,6 +5,9 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.Marker
 import com.squareup.picasso.Picasso
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import org.wit.geosite.databinding.ActivityGeositeMapsBinding
 import org.wit.geosite.databinding.ContentGeositeMapsBinding
 import org.wit.geosite.main.MainApp
@@ -30,8 +33,16 @@ class GeositeMapView : AppCompatActivity() , GoogleMap.OnMarkerClickListener{
 
         contentBinding.mapView.onCreate(savedInstanceState)
         contentBinding.mapView.getMapAsync{
-            presenter.doPopulateMap(it)
+            GlobalScope.launch(Dispatchers.Main) {
+                presenter.doPopulateMap(it)
+            }
         }
+    }
+    override fun onMarkerClick(marker: Marker): Boolean {
+        GlobalScope.launch(Dispatchers.Main) {
+            presenter.doMarkerSelected(marker)
+        }
+        return true
     }
     fun showGeosite(geosite: GeositeModel) {
         contentBinding.currentTitle.text = geosite.title
@@ -39,11 +50,6 @@ class GeositeMapView : AppCompatActivity() , GoogleMap.OnMarkerClickListener{
         Picasso.get()
             .load(geosite.image)
             .into(contentBinding.imageView2)
-    }
-
-    override fun onMarkerClick(marker: Marker): Boolean {
-        presenter.doMarkerSelected(marker)
-        return true
     }
 
     override fun onDestroy() {

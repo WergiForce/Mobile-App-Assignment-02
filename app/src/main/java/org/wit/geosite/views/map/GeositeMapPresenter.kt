@@ -14,7 +14,7 @@ class GeositeMapPresenter(val view: GeositeMapView) {
         app = view.application as MainApp
     }
 
-    fun doPopulateMap(map: GoogleMap) {
+    suspend fun doPopulateMap(map: GoogleMap) {
         map.uiSettings.setZoomControlsEnabled(true)
         map.setOnMarkerClickListener(view)
         app.geosites.findAll().forEach {
@@ -25,7 +25,7 @@ class GeositeMapPresenter(val view: GeositeMapView) {
         }
     }
 
-    fun doMarkerSelected(marker: Marker) {
+    suspend fun doMarkerSelected(marker: Marker) {
         val tag = marker.tag as Long
         val geosite = app.geosites.findById(tag)
         if (geosite != null) view.showGeosite(geosite)

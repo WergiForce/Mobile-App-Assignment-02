@@ -3,6 +3,9 @@ package org.wit.geosite.views.geositelist
 import android.content.Intent
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import org.wit.geosite.main.MainApp
 import org.wit.geosite.models.GeositeModel
 import org.wit.geosite.views.geosite.GeositeView
@@ -13,14 +16,13 @@ class GeositeListPresenter(val view: GeositeListView) {
     var app: MainApp = view.application as MainApp
     private lateinit var refreshIntentLauncher : ActivityResultLauncher<Intent>
     private lateinit var editIntentLauncher : ActivityResultLauncher<Intent>
-    private lateinit var mapIntentLauncher : ActivityResultLauncher<Intent>
 
     init {
         registerEditCallback()
         registerRefreshCallback()
     }
 
-    fun getGeosites() = app.geosites.findAll()
+    suspend fun getGeosites() = app.geosites.findAll()
 
     fun doAddGeosite() {
         val launcherIntent = Intent(view, GeositeView::class.java)
@@ -40,7 +42,11 @@ class GeositeListPresenter(val view: GeositeListView) {
     private fun registerRefreshCallback() {
         refreshIntentLauncher =
             view.registerForActivityResult(ActivityResultContracts.StartActivityForResult())
-            { getGeosites() }
+            {
+                GlobalScope.launch(Dispatchers.Main){
+                    getGeosites()
+                }
+            }
     }
     private fun registerEditCallback() {
         editIntentLauncher =
