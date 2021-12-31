@@ -7,6 +7,7 @@ import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import org.wit.geosite.R
 import org.wit.geosite.views.geositelist.GeositeListView
+import org.wit.geosite.views.login.LoginView
 
 @Suppress("DEPRECATION")
 class SplashScreen : AppCompatActivity() {
@@ -18,7 +19,7 @@ class SplashScreen : AppCompatActivity() {
             WindowManager.LayoutParams.FLAG_FULLSCREEN
         )
         Handler().postDelayed({
-            val intent = Intent(this, GeositeListView::class.java)
+            val intent = Intent(this, LoginView::class.java)
             startActivity(intent)
             finish()
         }, 3000)

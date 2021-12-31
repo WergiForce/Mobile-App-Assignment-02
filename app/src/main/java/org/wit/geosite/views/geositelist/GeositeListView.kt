@@ -4,6 +4,7 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.*
 import org.wit.geosite.R
 import org.wit.geosite.adapters.GeositeAdapter
@@ -24,7 +25,13 @@ class GeositeListView : AppCompatActivity(), GeositeListener {
         super.onCreate(savedInstanceState)
         binding = ActivityGeositeListBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
         binding.toolbar.title = title
+        val user = FirebaseAuth.getInstance().currentUser
+        if (user != null) {
+            binding.toolbar.title = "${title}: ${user.email}"
+        }
+
         setSupportActionBar(binding.toolbar)
         presenter = GeositeListPresenter(this)
         val layoutManager = LinearLayoutManager(this)
@@ -51,7 +58,11 @@ class GeositeListView : AppCompatActivity(), GeositeListener {
         when (item.itemId) {
             R.id.item_add -> { presenter.doAddGeosite() }
             R.id.item_map -> { presenter.doShowGeositesMap() }
-            R.id.item_logout -> { presenter.doLogout() }
+            R.id.item_logout -> {
+                GlobalScope.launch(Dispatchers.IO) {
+                    presenter.doLogout()
+                }
+            }
         }
         return super.onOptionsItemSelected(item)
     }

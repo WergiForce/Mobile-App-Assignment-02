@@ -150,7 +150,7 @@ class GeositePresenter(private val view: GeositeView) {
                     AppCompatActivity.RESULT_OK -> {
                         if (result.data != null) {
                             Timber.i("Got Result ${result.data!!.data}")
-                            geosite.image = result.data!!.data!!
+                            geosite.image = result.data!!.data!!.toString()
                             view.updateImage(geosite.image)
                         }
                     }
@@ -168,7 +168,7 @@ class GeositePresenter(private val view: GeositeView) {
                     AppCompatActivity.RESULT_OK -> {
                         if (result.data != null) {
                             Timber.i("Got Result ${result.data!!.data}")
-                            geosite.image = result.data!!.data!!
+                            geosite.image = result.data!!.data!!.toString()
                             view.updateImage(geosite.image)
                         }
                     }

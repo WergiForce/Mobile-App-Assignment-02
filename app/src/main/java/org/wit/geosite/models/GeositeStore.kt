@@ -6,4 +6,5 @@ interface GeositeStore {
     suspend fun update(geosite: GeositeModel)
     suspend fun findById(id:Long) : GeositeModel?
     suspend fun delete(geosite: GeositeModel)
+    suspend fun clear()
 }

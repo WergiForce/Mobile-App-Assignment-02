@@ -76,6 +76,10 @@ class GeositeJSONStore(private val context: Context) : GeositeStore {
     private fun logAll() {
         geosites.forEach { Timber.i("$it") }
     }
+
+    override suspend fun clear(){
+        geosites.clear()
+    }
 }
 
 class UriParser : JsonDeserializer<Uri>,JsonSerializer<Uri> {
@@ -94,4 +98,6 @@ class UriParser : JsonDeserializer<Uri>,JsonSerializer<Uri> {
     ): JsonElement {
         return JsonPrimitive(src.toString())
     }
+
+
 }

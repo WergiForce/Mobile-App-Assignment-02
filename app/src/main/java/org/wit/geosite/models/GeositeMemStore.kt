@@ -44,4 +44,8 @@ class GeositeMemStore : GeositeStore {
         val foundGeosite: GeositeModel? = geosites.find { it.id == id }
         return foundGeosite
     }
+
+    override suspend fun clear(){
+        geosites.clear()
+    }
 }
