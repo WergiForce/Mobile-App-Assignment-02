@@ -8,6 +8,8 @@ import org.wit.geosite.main.MainApp
 import org.wit.geosite.models.GeositeFireStore
 import org.wit.geosite.views.geositelist.GeositeListView
 
+
+
 class LoginPresenter (val view: LoginView)  {
     private lateinit var loginIntentLauncher : ActivityResultLauncher<Intent>
     var app: MainApp = view.application as MainApp
@@ -20,6 +22,7 @@ class LoginPresenter (val view: LoginView)  {
             fireStore = app.geosites as GeositeFireStore
         }
     }
+
 
     fun doLogin(email: String, password: String) {
         view.showProgress()
@@ -49,8 +52,11 @@ class LoginPresenter (val view: LoginView)  {
         view.showProgress()
         auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(view) { task ->
             if (task.isSuccessful) {
-                val launcherIntent = Intent(view, GeositeListView::class.java)
-                loginIntentLauncher.launch(launcherIntent)
+                fireStore!!.fetchGeosites {
+                    view?.hideProgress()
+                    val launcherIntent = Intent(view, GeositeListView::class.java)
+                    loginIntentLauncher.launch(launcherIntent)
+                }
             } else {
                 view.showSnackBar("Login failed: ${task.exception?.message}")
             }

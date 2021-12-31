@@ -45,6 +45,7 @@ class LoginView : AppCompatActivity(){
         Snackbar.make(binding.root, message, Snackbar.LENGTH_LONG)
             .show()
     }
+
     fun showProgress() {
         binding.progressBar.visibility = View.VISIBLE
     }
@@ -52,4 +53,6 @@ class LoginView : AppCompatActivity(){
     fun hideProgress() {
         binding.progressBar.visibility = View.GONE
     }
+
+
 }

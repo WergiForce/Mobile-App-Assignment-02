@@ -34,6 +34,7 @@ class GeositePresenter(private val view: GeositeView) {
     private lateinit var mapIntentLauncher : ActivityResultLauncher<Intent>
     private lateinit var requestPermissionLauncher: ActivityResultLauncher<String>
     var edit = false;
+    var locationManualyChanged = false;
     private val location = Location(52.245696, -7.139102, 15f)
 
     init {
@@ -87,8 +88,10 @@ class GeositePresenter(private val view: GeositeView) {
     }
 
     fun doSetLocation() {
+        locationManualyChanged = true;
 
         if (geosite.location.zoom != 0f) {
+
             location.lat =  geosite.location.lat
             location.lng = geosite.location.lng
             location.zoom = geosite.location.zoom
@@ -113,7 +116,9 @@ class GeositePresenter(private val view: GeositeView) {
             override fun onLocationResult(locationResult: LocationResult?) {
                 if (locationResult != null && locationResult.locations != null) {
                     val l = locationResult.locations.last()
-                    locationUpdate(l.latitude, l.longitude)
+                    if(!locationManualyChanged){
+                        locationUpdate(l.latitude, l.longitude)
+                    }
                 }
             }
         }
@@ -121,6 +126,7 @@ class GeositePresenter(private val view: GeositeView) {
             locationService.requestLocationUpdates(locationRequest, locationCallback, null)
         }
     }
+
     fun doConfigureMap(m: GoogleMap) {
         map = m
         locationUpdate(geosite.location.lat, geosite.location.lng)
