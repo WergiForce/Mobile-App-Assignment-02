@@ -14,6 +14,7 @@ import kotlinx.coroutines.launch
 import org.wit.geosite.R
 import org.wit.geosite.databinding.ActivityGeositeBinding
 import org.wit.geosite.models.GeositeModel
+import org.wit.geosite.models.Location
 import timber.log.Timber.i
 
 class GeositeView : AppCompatActivity() {
@@ -95,20 +96,22 @@ class GeositeView : AppCompatActivity() {
     fun showGeosite(geosite: GeositeModel) {
         if (binding.geositeTitle.text.isEmpty()) binding.geositeTitle.setText(geosite.title)
         if (binding.description.text.isEmpty())  binding.description.setText(geosite.description)
+        if (geosite.image != "") {
+            Picasso.get()
+                .load(geosite.image)
+                .into(binding.geositeImage)
 
-        Picasso.get()
-            .load(geosite.image)
-            .into(binding.geositeImage)
-
-        if (geosite.image != Uri.EMPTY) {
             binding.chooseImage.setText(R.string.change_geosite_image)
         }
-        binding.lat.setText("%.6f".format(geosite.lat))
-        binding.lng.setText("%.6f".format(geosite.lng))
-
+        this.showLocation(geosite.location)
     }
 
-    fun updateImage(image: Uri){
+    private fun showLocation (loc: Location){
+        binding.lat.setText("%.6f".format(loc.lat))
+        binding.lng.setText("%.6f".format(loc.lng))
+    }
+
+    fun updateImage(image: String){
         i("Image updated")
         Picasso.get()
             .load(image)
