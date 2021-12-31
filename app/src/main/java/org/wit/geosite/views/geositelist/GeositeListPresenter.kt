@@ -9,6 +9,7 @@ import kotlinx.coroutines.launch
 import org.wit.geosite.main.MainApp
 import org.wit.geosite.models.GeositeModel
 import org.wit.geosite.views.geosite.GeositeView
+import org.wit.geosite.views.login.LoginView
 import org.wit.geosite.views.map.GeositeMapView
 
 class GeositeListPresenter(val view: GeositeListView) {
@@ -53,5 +54,10 @@ class GeositeListPresenter(val view: GeositeListView) {
             view.registerForActivityResult(ActivityResultContracts.StartActivityForResult())
             {  }
 
+    }
+
+    fun doLogout(){
+        val launcherIntent = Intent(view, LoginView::class.java)
+        editIntentLauncher.launch(launcherIntent)
     }
 }

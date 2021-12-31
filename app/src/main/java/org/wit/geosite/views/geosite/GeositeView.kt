@@ -103,8 +103,8 @@ class GeositeView : AppCompatActivity() {
         if (geosite.image != Uri.EMPTY) {
             binding.chooseImage.setText(R.string.change_geosite_image)
         }
-        binding.lat.setText("%.6f".format(geosite.lat))
-        binding.lng.setText("%.6f".format(geosite.lng))
+        binding.lat.setText("%.6f".format(geosite.location.lat))
+        binding.lng.setText("%.6f".format(geosite.location.lng))
 
     }
 

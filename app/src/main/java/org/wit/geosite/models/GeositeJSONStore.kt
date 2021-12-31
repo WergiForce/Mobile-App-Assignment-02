@@ -48,9 +48,7 @@ class GeositeJSONStore(private val context: Context) : GeositeStore {
             foundGeosite.title = geosite.title
             foundGeosite.description = geosite.description
             foundGeosite.image = geosite.image
-            foundGeosite.lat = geosite.lat
-            foundGeosite.lng = geosite.lng
-            foundGeosite.zoom = geosite.zoom
+            foundGeosite.location = geosite.location
         }
         serialize()
     }

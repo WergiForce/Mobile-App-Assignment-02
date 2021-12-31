@@ -52,10 +52,9 @@ class GeositePresenter(private val view: GeositeView) {
             if (checkLocationPermissions(view)) {
                 doSetCurrentLocation()
             }
-            geosite.lat = location.lat
-            geosite.lng = location.lng
+            geosite.location.lat = location.lat
+            geosite.location.lng = location.lng
         }
-
     }
 
 
@@ -89,11 +88,11 @@ class GeositePresenter(private val view: GeositeView) {
 
     fun doSetLocation() {
 
-        if (geosite.zoom != 0f) {
-            location.lat =  geosite.lat
-            location.lng = geosite.lng
-            location.zoom = geosite.zoom
-            locationUpdate(geosite.lat, geosite.lng)
+        if (geosite.location.zoom != 0f) {
+            location.lat =  geosite.location.lat
+            location.lng = geosite.location.lng
+            location.zoom = geosite.location.zoom
+            locationUpdate(geosite.location.lat, geosite.location.lng)
         }
         val launcherIntent = Intent(view, EditLocationView::class.java)
             .putExtra("location", location)
@@ -124,18 +123,16 @@ class GeositePresenter(private val view: GeositeView) {
     }
     fun doConfigureMap(m: GoogleMap) {
         map = m
-        locationUpdate(geosite.lat, geosite.lng)
+        locationUpdate(geosite.location.lat, geosite.location.lng)
     }
 
     fun locationUpdate(lat: Double, lng: Double) {
-        geosite.lat = lat
-        geosite.lng = lng
-        geosite.zoom = 15f
+        geosite.location = location
         map?.clear()
         map?.uiSettings?.setZoomControlsEnabled(true)
-        val options = MarkerOptions().title(geosite.title).position(LatLng(geosite.lat, geosite.lng))
+        val options = MarkerOptions().title(geosite.title).position(LatLng(geosite.location.lat, geosite.location.lng))
         map?.addMarker(options)
-        map?.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(geosite.lat, geosite.lng), geosite.zoom))
+        map?.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(geosite.location.lat, geosite.location.lng), geosite.location.zoom))
         view.showGeosite(geosite)
     }
 
@@ -167,16 +164,13 @@ class GeositePresenter(private val view: GeositeView) {
         mapIntentLauncher =
             view.registerForActivityResult(ActivityResultContracts.StartActivityForResult())
             { result ->
-                when (result.resultCode) {
+                when(result.resultCode){
                     AppCompatActivity.RESULT_OK -> {
                         if (result.data != null) {
-                            Timber.i("Got Location ${result.data.toString()}")
-                            val location = result.data!!.extras?.getParcelable<Location>("location")!!
-                            Timber.i("Location == $location")
-                            geosite.lat = location.lat
-                            geosite.lng = location.lng
-                            geosite.zoom = location.zoom
-                        } // end of if
+                            Timber.i("Got Result ${result.data!!.data}")
+                            geosite.image = result.data!!.data!!
+                            view.updateImage(geosite.image)
+                        }
                     }
                     AppCompatActivity.RESULT_CANCELED -> { } else -> { }
                 }

@@ -51,6 +51,7 @@ class GeositeListView : AppCompatActivity(), GeositeListener {
         when (item.itemId) {
             R.id.item_add -> { presenter.doAddGeosite() }
             R.id.item_map -> { presenter.doShowGeositesMap() }
+            R.id.item_logout -> { presenter.doLogout() }
         }
         return super.onOptionsItemSelected(item)
     }
