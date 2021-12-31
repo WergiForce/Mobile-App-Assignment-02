@@ -4,6 +4,7 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import kotlinx.coroutines.*
 import org.wit.geosite.R
 import org.wit.geosite.adapters.GeositeAdapter
 import org.wit.geosite.adapters.GeositeListener
@@ -19,20 +20,16 @@ class GeositeListView : AppCompatActivity(), GeositeListener {
     lateinit var presenter: GeositeListPresenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        i("Recycler View Loaded")
+
         super.onCreate(savedInstanceState)
         binding = ActivityGeositeListBinding.inflate(layoutInflater)
         setContentView(binding.root)
         binding.toolbar.title = title
         setSupportActionBar(binding.toolbar)
         presenter = GeositeListPresenter(this)
-        //app = application as MainApp
-
         val layoutManager = LinearLayoutManager(this)
         binding.recyclerView.layoutManager = layoutManager
-        binding.recyclerView.adapter =
-            GeositeAdapter(presenter.getGeosites(), this)
-
+        updateRecyclerView()
     }
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
@@ -40,10 +37,13 @@ class GeositeListView : AppCompatActivity(), GeositeListener {
     }
 
     override fun onResume() {
+
         //update the view
+        super.onResume()
+        updateRecyclerView()
         binding.recyclerView.adapter?.notifyDataSetChanged()
         i("recyclerView onResume")
-        super.onResume()
+
     }
 
 
@@ -58,6 +58,13 @@ class GeositeListView : AppCompatActivity(), GeositeListener {
     override fun onGeositeClick(geosite: GeositeModel) {
         presenter.doEditGeosite(geosite)
 
+    }
+
+    private fun updateRecyclerView(){
+        GlobalScope.launch(Dispatchers.Main){
+            binding.recyclerView.adapter =
+                GeositeAdapter(presenter.getGeosites(), this@GeositeListView)
+        }
     }
 
 }
