@@ -3,12 +3,14 @@ package org.wit.geosite.views.geositelist
 import android.content.Intent
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.wit.geosite.main.MainApp
 import org.wit.geosite.models.GeositeModel
 import org.wit.geosite.views.geosite.GeositeView
+import org.wit.geosite.views.login.LoginView
 import org.wit.geosite.views.map.GeositeMapView
 
 class GeositeListPresenter(val view: GeositeListView) {
@@ -53,5 +55,12 @@ class GeositeListPresenter(val view: GeositeListView) {
             view.registerForActivityResult(ActivityResultContracts.StartActivityForResult())
             {  }
 
+    }
+
+    suspend fun doLogout(){
+        FirebaseAuth.getInstance().signOut()
+        app.geosites.clear()
+        val launcherIntent = Intent(view, LoginView::class.java)
+        editIntentLauncher.launch(launcherIntent)
     }
 }

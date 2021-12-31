@@ -36,4 +36,7 @@ class GeositeStoreRoom(val context: Context) : GeositeStore {
     override suspend fun delete(geosite: GeositeModel) {
         dao.deleteGeosite(geosite)
     }
+
+    override suspend fun clear() {
+    }
 }

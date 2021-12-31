@@ -48,9 +48,7 @@ class GeositeJSONStore(private val context: Context) : GeositeStore {
             foundGeosite.title = geosite.title
             foundGeosite.description = geosite.description
             foundGeosite.image = geosite.image
-            foundGeosite.lat = geosite.lat
-            foundGeosite.lng = geosite.lng
-            foundGeosite.zoom = geosite.zoom
+            foundGeosite.location = geosite.location
         }
         serialize()
     }
@@ -78,6 +76,10 @@ class GeositeJSONStore(private val context: Context) : GeositeStore {
     private fun logAll() {
         geosites.forEach { Timber.i("$it") }
     }
+
+    override suspend fun clear(){
+        geosites.clear()
+    }
 }
 
 class UriParser : JsonDeserializer<Uri>,JsonSerializer<Uri> {
@@ -96,4 +98,6 @@ class UriParser : JsonDeserializer<Uri>,JsonSerializer<Uri> {
     ): JsonElement {
         return JsonPrimitive(src.toString())
     }
+
+
 }
