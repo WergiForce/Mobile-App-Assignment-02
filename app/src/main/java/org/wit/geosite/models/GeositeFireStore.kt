@@ -40,6 +40,7 @@ class GeositeFireStore(val context: Context) : GeositeStore {
         if (foundGeosite != null) {
             foundGeosite.title = geosite.title
             foundGeosite.description = geosite.description
+            foundGeosite.ightheme = geosite.ightheme
             foundGeosite.image = geosite.image
             foundGeosite.location = geosite.location
         }

@@ -35,12 +35,12 @@ class GeositeView : AppCompatActivity() {
         presenter = GeositePresenter(this)
 
         binding.chooseImage.setOnClickListener {
-            presenter.cacheGeosite(binding.geositeTitle.text.toString(), binding.description.text.toString())
+            presenter.cacheGeosite(binding.geositeTitle.text.toString(), binding.description.text.toString(), binding.ightheme.text.toString())
             presenter.doSelectImage()
         }
 
         binding.mapView2.setOnClickListener {
-            presenter.cacheGeosite(binding.geositeTitle.text.toString(), binding.description.text.toString())
+            presenter.cacheGeosite(binding.geositeTitle.text.toString(), binding.description.text.toString(), binding.ightheme.text.toString())
             presenter.doSetLocation()
         }
 
@@ -75,7 +75,8 @@ class GeositeView : AppCompatActivity() {
                     GlobalScope.launch(Dispatchers.IO) {
                         presenter.doAddOrSave(
                             binding.geositeTitle.text.toString(),
-                            binding.description.text.toString()
+                            binding.description.text.toString(),
+                            binding.ightheme.text.toString()
                         )
                     }
                 }
@@ -96,6 +97,7 @@ class GeositeView : AppCompatActivity() {
     fun showGeosite(geosite: GeositeModel) {
         if (binding.geositeTitle.text.isEmpty()) binding.geositeTitle.setText(geosite.title)
         if (binding.description.text.isEmpty())  binding.description.setText(geosite.description)
+        if (binding.ightheme.text.isEmpty())     binding.ightheme.setText(geosite.ightheme)
         if (geosite.image != "") {
             Picasso.get()
                 .load(geosite.image)
