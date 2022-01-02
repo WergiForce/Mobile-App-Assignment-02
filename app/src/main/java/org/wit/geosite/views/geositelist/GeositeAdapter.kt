@@ -35,6 +35,7 @@ class GeositeAdapter constructor(private var geosites: List<GeositeModel>,
         fun bind(geosite: GeositeModel, listener: GeositeListener) {
             binding.geositeTitle.text = geosite.title
             binding.description.text = geosite.description
+            binding.ightheme.text = geosite.ightheme
             if (geosite.image != ""){
                 Picasso.get()
                     .load(geosite.image)
