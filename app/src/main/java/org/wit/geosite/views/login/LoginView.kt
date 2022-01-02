@@ -27,16 +27,6 @@ class LoginView : AppCompatActivity(){
     private lateinit var auth: FirebaseAuth
     private lateinit var loginIntentLauncher : ActivityResultLauncher<Intent>
 
-
-    //override fun onStart() {
-    //    super.onStart()
-    //    val currentUser = auth.currentUser
-    //    if(currentUser != null) {
-    //        val launcherIntent = Intent(this, GeositeListView::class.java)
-    //        loginIntentLauncher.launch(launcherIntent)
-    //       }
-    //}
-
     override fun onCreate(savedInstanceState: Bundle?) {
 
         presenter = LoginPresenter( this)
@@ -108,11 +98,9 @@ class LoginView : AppCompatActivity(){
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
             val task = GoogleSignIn.getSignedInAccountFromIntent(data)
             try {
-                // Google Sign In was successful, authenticate with Firebase
                 val account = task.getResult(ApiException::class.java)!!
                 presenter.firebaseAuthWithGoogle(account.idToken!!)
             } catch (e: ApiException) {

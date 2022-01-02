@@ -9,8 +9,6 @@ import org.wit.geosite.main.MainApp
 import org.wit.geosite.models.GeositeFireStore
 import org.wit.geosite.views.geositelist.GeositeListView
 
-
-
 class LoginPresenter (val view: LoginView)  {
     private lateinit var loginIntentLauncher : ActivityResultLauncher<Intent>
     var app: MainApp = view.application as MainApp
