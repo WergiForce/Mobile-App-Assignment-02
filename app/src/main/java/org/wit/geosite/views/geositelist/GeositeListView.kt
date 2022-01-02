@@ -4,6 +4,7 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.*
 import org.wit.geosite.R
@@ -37,15 +38,20 @@ class GeositeListView : AppCompatActivity(), GeositeListener {
         val layoutManager = LinearLayoutManager(this)
         binding.recyclerView.layoutManager = layoutManager
         updateRecyclerView()
+
+        val fab: FloatingActionButton = binding.fab
+        fab.setOnClickListener {
+            presenter.doAddGeosite()
+        }
     }
+
+
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
         return super.onCreateOptionsMenu(menu)
     }
 
     override fun onResume() {
-
-        //update the view
         super.onResume()
         updateRecyclerView()
         binding.recyclerView.adapter?.notifyDataSetChanged()
@@ -69,8 +75,9 @@ class GeositeListView : AppCompatActivity(), GeositeListener {
 
     override fun onGeositeClick(geosite: GeositeModel) {
         presenter.doEditGeosite(geosite)
-
     }
+
+
 
     private fun updateRecyclerView(){
         GlobalScope.launch(Dispatchers.Main){
