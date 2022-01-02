@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.ArrayAdapter
+import android.widget.Spinner
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.material.snackbar.Snackbar
 import com.squareup.picasso.Picasso
@@ -35,12 +37,12 @@ class GeositeView : AppCompatActivity() {
         presenter = GeositePresenter(this)
 
         binding.chooseImage.setOnClickListener {
-            presenter.cacheGeosite(binding.geositeTitle.text.toString(), binding.description.text.toString(), binding.ightheme.text.toString())
+            presenter.cacheGeosite(binding.geositeTitle.text.toString(), binding.description.text.toString(), binding.ightheme.selectedItem.toString())
             presenter.doSelectImage()
         }
 
         binding.mapView2.setOnClickListener {
-            presenter.cacheGeosite(binding.geositeTitle.text.toString(), binding.description.text.toString(), binding.ightheme.text.toString())
+            presenter.cacheGeosite(binding.geositeTitle.text.toString(), binding.description.text.toString(), binding.ightheme.selectedItem.toString())
             presenter.doSetLocation()
         }
 
@@ -51,6 +53,16 @@ class GeositeView : AppCompatActivity() {
             it.setOnMapClickListener { presenter.doSetLocation() }
         }
 
+
+        val spinner: Spinner = findViewById(R.id.ightheme)
+        ArrayAdapter.createFromResource(
+            this,
+            R.array.ighthemes,
+            android.R.layout.simple_spinner_item
+        ).also { adapter ->
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            spinner.adapter = adapter
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -76,7 +88,7 @@ class GeositeView : AppCompatActivity() {
                         presenter.doAddOrSave(
                             binding.geositeTitle.text.toString(),
                             binding.description.text.toString(),
-                            binding.ightheme.text.toString()
+                            binding.ightheme.selectedItem.toString()
                         )
                     }
                 }
@@ -97,7 +109,6 @@ class GeositeView : AppCompatActivity() {
     fun showGeosite(geosite: GeositeModel) {
         if (binding.geositeTitle.text.isEmpty()) binding.geositeTitle.setText(geosite.title)
         if (binding.description.text.isEmpty())  binding.description.setText(geosite.description)
-        if (binding.ightheme.text.isEmpty())     binding.ightheme.setText(geosite.ightheme)
         if (geosite.image != "") {
             Picasso.get()
                 .load(geosite.image)
