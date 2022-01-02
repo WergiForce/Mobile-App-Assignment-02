@@ -28,13 +28,13 @@ class GeositePresenter(private val view: GeositeView) {
     var map: GoogleMap? = null
     var geosite = GeositeModel()
     var app: MainApp = view.application as MainApp
+    var locationManualyChanged = false;
     //location service
     var locationService: FusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(view)
     private lateinit var imageIntentLauncher : ActivityResultLauncher<Intent>
     private lateinit var mapIntentLauncher : ActivityResultLauncher<Intent>
     private lateinit var requestPermissionLauncher: ActivityResultLauncher<String>
     var edit = false;
-    var locationManualyChanged = false;
     private val location = Location(52.245696, -7.139102, 15f)
 
     init {
@@ -56,12 +56,14 @@ class GeositePresenter(private val view: GeositeView) {
             geosite.location.lat = location.lat
             geosite.location.lng = location.lng
         }
+
     }
 
 
-    suspend fun doAddOrSave(title: String, description: String) {
+    suspend fun doAddOrSave(title: String, description: String, ightheme: String) {
         geosite.title = title
         geosite.description = description
+        geosite.ightheme = ightheme
         if (edit) {
             app.geosites.update(geosite)
         } else {
@@ -126,7 +128,6 @@ class GeositePresenter(private val view: GeositeView) {
             locationService.requestLocationUpdates(locationRequest, locationCallback, null)
         }
     }
-
     fun doConfigureMap(m: GoogleMap) {
         map = m
         locationUpdate(geosite.location.lat, geosite.location.lng)
@@ -142,9 +143,10 @@ class GeositePresenter(private val view: GeositeView) {
         view.showGeosite(geosite)
     }
 
-    fun cacheGeosite (title: String, description: String) {
+    fun cacheGeosite (title: String, description: String, ightheme: String) {
         geosite.title = title;
         geosite.description = description
+        geosite.ightheme = ightheme
     }
 
     private fun registerImagePickerCallback() {
@@ -170,13 +172,14 @@ class GeositePresenter(private val view: GeositeView) {
         mapIntentLauncher =
             view.registerForActivityResult(ActivityResultContracts.StartActivityForResult())
             { result ->
-                when(result.resultCode){
+                when (result.resultCode) {
                     AppCompatActivity.RESULT_OK -> {
                         if (result.data != null) {
-                            Timber.i("Got Result ${result.data!!.data}")
-                            geosite.image = result.data!!.data!!.toString()
-                            view.updateImage(geosite.image)
-                        }
+                            Timber.i("Got Location ${result.data.toString()}")
+                            val location = result.data!!.extras?.getParcelable<Location>("location")!!
+                            Timber.i("Location == $location")
+                            geosite.location = location
+                        } // end of if
                     }
                     AppCompatActivity.RESULT_CANCELED -> { } else -> { }
                 }
@@ -187,13 +190,13 @@ class GeositePresenter(private val view: GeositeView) {
     private fun doPermissionLauncher() {
         i("permission check called")
         requestPermissionLauncher =
-        view.registerForActivityResult(ActivityResultContracts.RequestPermission())
-        { isGranted: Boolean ->
-            if (isGranted) {
-                doSetCurrentLocation()
-            } else {
-                locationUpdate(location.lat, location.lng)
+            view.registerForActivityResult(ActivityResultContracts.RequestPermission())
+            { isGranted: Boolean ->
+                if (isGranted) {
+                    doSetCurrentLocation()
+                } else {
+                    locationUpdate(location.lat, location.lng)
+                }
             }
-        }
     }
 }

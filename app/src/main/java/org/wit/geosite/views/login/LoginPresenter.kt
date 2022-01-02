@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.GoogleAuthProvider
 import org.wit.geosite.main.MainApp
 import org.wit.geosite.models.GeositeFireStore
 import org.wit.geosite.views.geositelist.GeositeListView
@@ -69,4 +70,29 @@ class LoginPresenter (val view: LoginView)  {
             view.registerForActivityResult(ActivityResultContracts.StartActivityForResult())
             {  }
     }
+
+    fun firebaseAuthWithGoogle(idToken: String) {
+        val credential = GoogleAuthProvider.getCredential(idToken, null)
+        view.showProgress()
+        auth.signInWithCredential(credential).addOnCompleteListener(view) { task ->
+            if (task.isSuccessful) {
+                if (fireStore != null) {
+                    fireStore!!.fetchGeosites {
+                        view?.hideProgress()
+                        val launcherIntent = Intent(view, GeositeListView::class.java)
+                        loginIntentLauncher.launch(launcherIntent)
+                    }
+                } else {
+                    view?.hideProgress()
+                    val launcherIntent = Intent(view, GeositeListView::class.java)
+                    loginIntentLauncher.launch(launcherIntent)
+                }
+            } else {
+                view?.hideProgress()
+                view.showSnackBar("Login failed: ${task.exception?.message}")
+            }
+            view.hideProgress()
+        }
+    }
+
 }

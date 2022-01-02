@@ -13,6 +13,7 @@ data class GeositeModel(@PrimaryKey(autoGenerate = true)var id: Long = 0,
                         var fbId: String = "",
                         var title: String = "",
                         var description: String = "",
+                        var ightheme: String = "",
                         var image: String = "",
                         @Embedded var location : Location = Location()): Parcelable
 

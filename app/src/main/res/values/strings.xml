@@ -3,6 +3,7 @@
     <string name="button_addGeosite">Add Geosite</string>
     <string name="hint_geositeTitle">Geosite Title</string>
     <string name="hint_geositeDescription">Description </string>
+    <string name="hint_geositeIGHtheme">IGH Theme </string>
     <string name="menu_addGeosite">Add</string>
     <string name="menu_mapMode">Map Mode</string>
     <string name="menu_cancelGeosite">Cancel</string>
