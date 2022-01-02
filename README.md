@@ -10,8 +10,9 @@ This is an application for logging sites of interest to the Geological Heritage 
 Survey Ireland.
 
 This app allows for the login of contributors, authenticated though Firebase authentication methods.
+Login is also possible using a Google account.
 
-Upon sign in, contributors will see a full list of all sites logged to date, stored in a realtime
+Upon sign in, contributors will see a full list of all sites they have logged to date, stored in a realtime
 database using Firebase. Information displayed on this list includes the title of the site, a brief
 description and the associated Irish Geologial Heritage Theme. If an image has been added this image
 will also be displayed on this card.
